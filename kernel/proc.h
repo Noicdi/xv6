@@ -1,7 +1,7 @@
 // Saved registers for kernel context switches.
 struct context {
-  uint64 ra;
-  uint64 sp;
+  uint64 ra; // return address
+  uint64 sp; // stack pointer
 
   // callee-saved
   uint64 s0;
@@ -28,6 +28,7 @@ struct cpu {
 
 extern struct cpu cpus[NCPU];
 
+// Figure 2.3
 // per-process data for the trap handling code in trampoline.S.
 // sits in a page by itself just under the trampoline page in the
 // user page table. not specially mapped in the kernel page table.
@@ -79,12 +80,16 @@ struct trapframe {
   /* 280 */ uint64 t6;
 };
 
+// xv6-book P27:
+// run, running, waiting for I/O, exiting
+// ZOMBIE->僵尸
 enum procstate { UNUSED, USED, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
 
 // Per-process state
 struct proc {
   struct spinlock lock;
 
+  // held -> hold -> 握住/持有
   // p->lock must be held when using these:
   enum procstate state;        // Process state
   void *chan;                  // If non-zero, sleeping on chan
