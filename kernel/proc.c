@@ -50,6 +50,7 @@ void procinit(void) {
   for (p = proc; p < &proc[NPROC]; p++) {
     initlock(&p->lock, "proc");
     p->state = UNUSED;
+    p->trace_mask = 0;
     p->kstack = KSTACK((int)(p - proc));
   }
 }
@@ -57,7 +58,7 @@ void procinit(void) {
 // Must be called with interrupts disabled,
 // to prevent race with process being moved
 // to a different CPU.
-// return current core number
+// return current core number <-
 int cpuid() {
   int id = r_tp();
   // return tp -> thread pointer
@@ -67,17 +68,15 @@ int cpuid() {
 
 // Return this CPU's cpu struct.
 // Interrupts must be disabled.
-struct cpu *
-mycpu(void) {
+struct cpu *mycpu(void) {
   int id = cpuid();
   struct cpu *c = &cpus[id];
   return c;
 }
 
 // Return the current struct proc *, or zero if none.
-struct proc *
-myproc(void) {
-  push_off();
+struct proc *myproc(void) {
+  push_off(); // 获取前需要关中断
   struct cpu *c = mycpu();
   struct proc *p = c->proc;
   pop_off();
@@ -99,8 +98,7 @@ int allocpid() {
 // If found, initialize state required to run in the kernel,
 // and return with p->lock held.
 // If there are no free procs, or a memory allocation fails, return 0.
-static struct proc *
-allocproc(void) {
+static struct proc *allocproc(void) {
   struct proc *p;
 
   for (p = proc; p < &proc[NPROC]; p++) {
@@ -116,6 +114,7 @@ allocproc(void) {
 found:
   p->pid = allocpid();
   p->state = USED;
+  p->trace_mask = 0;
 
   // Allocate a trapframe page.
   if ((p->trapframe = (struct trapframe *)kalloc()) == 0) {
@@ -160,6 +159,7 @@ freeproc(struct proc *p) {
   p->killed = 0;
   p->xstate = 0;
   p->state = UNUSED;
+  p->trace_mask = 0;
 }
 
 // Create a user page table for a given process, with no user memory,
@@ -263,7 +263,7 @@ int growproc(int n) {
 // Sets up child kernel stack to return as if from fork() system call.
 int fork(void) {
   int i, pid;
-  struct proc *np;
+  struct proc *np; // new process
   struct proc *p = myproc();
 
   // Allocate process.
@@ -284,6 +284,8 @@ int fork(void) {
 
   // Cause fork to return 0 in the child.
   np->trapframe->a0 = 0;
+
+  np->trace_mask = p->trace_mask;
 
   // increment reference counts on open file descriptors.
   for (i = 0; i < NOFILE; i++)
@@ -631,4 +633,9 @@ void procdump(void) {
     printf("%d %s %s", p->pid, state, p->name);
     printf("\n");
   }
+}
+
+void trace(int mask) {
+  struct proc *p = myproc();
+  p->trace_mask = mask;
 }

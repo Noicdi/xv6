@@ -60,9 +60,3 @@ start:
 ![xv6-boot-7](attachments/xv6-boot-7.png)
 
 通过 `exec` 实际上会执行 `init`，也就是说，`initcode` 通过 `exec` 调用了 `init`。`init` 会为用户空间做一些配置，最终启动 `sh`。
-
-## 系统调用时干啥了
-
-1. 通过 `user/usys.py` 生成的 `user/usys.S`，保存调用号到 `a7`，保存用户态数据（例如参数存入 `a0` 等寄存器），通过 `ecall` 切换到内核态；
-2. `kernel/syscall.c/syscall()` 读取 `a7` 中的调用号，通过 `syscalls [num]() `转入相关系统调用的内核级实现；
-3. 通过一些寄存器（`a0` 等）读取用户使用系统调用时的参数，完成相关操作。

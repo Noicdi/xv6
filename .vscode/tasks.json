@@ -8,7 +8,6 @@
             "type": "shell",
             "command": "make",
             "args": [
-                "clean",
                 "qemu"
             ]
         },
@@ -17,11 +16,18 @@
             "type": "shell",
             "command": "make",
             "args": [
-                "clean",
                 "qemu-gdb",
-                // "CPUS=1"
+                "CPUS=1"
             ],
             "isBackground": true,
+        },
+        {
+            "label": "xv6-clean",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "clean"
+            ]
         }
     ]
 }
