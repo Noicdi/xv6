@@ -95,3 +95,12 @@ sys_trace(void) {
 
   return 0;
 }
+
+uint64
+sys_sysinfo(void) {
+  uint64 addr; // user pointer to struct sysinfo
+
+  argaddr(0, &addr);
+
+  return sysinfo(addr);
+}

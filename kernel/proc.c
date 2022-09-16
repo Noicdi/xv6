@@ -4,6 +4,7 @@
 #include "riscv.h"
 #include "spinlock.h"
 #include "proc.h"
+#include "sysinfo.h"
 #include "defs.h"
 
 struct cpu cpus[NCPU];
@@ -638,4 +639,29 @@ void procdump(void) {
 void trace(int mask) {
   struct proc *p = myproc();
   p->trace_mask = mask;
+}
+
+// collect the number of processes whose state is not UNUSED
+uint64 collproc() {
+  uint count = 0;
+
+  for (uint i = 0; i < NPROC; i++) {
+    if (proc[i].state != UNUSED) {
+      count++;
+    }
+  }
+
+  return count;
+}
+
+int sysinfo(uint64 addr) {
+  struct proc *p = myproc();
+  struct sysinfo info;
+
+  info.freemem = collfree();
+  info.nproc = collproc();
+
+  if (copyout(p->pagetable, addr, (char *)&info, sizeof(info)) < 0)
+    return -1;
+  return 0;
 }
