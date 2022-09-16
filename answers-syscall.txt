@@ -1,0 +1,12 @@
+Q:  Looking at the backtrace output, which function called syscall?
+A:  void usertrap()
+
+Q:  What is the value of p->trapframe->a7 and what does that value represent? (Hint: look user/initcode.S, the first user program xv6 starts.)
+A:  p->trapframe->a7 = 7, it is system call number of SYS_exec.
+
+Q:  What was the previous mode that the CPU was in?
+A:  sstatus     0x200000022  8589934626
+                0010 0000 0000 0000 0000 0000 0000 0010 0010
+    sstatus 的 SPP 保存的是权限模式，应该与 mstatus 的 MPP 所对应
+    SPP 在 8 处，为 0，应该是 user mode
+
