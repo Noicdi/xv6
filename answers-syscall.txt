@@ -8,5 +8,5 @@ Q:  What was the previous mode that the CPU was in?
 A:  sstatus     0x200000022  8589934626
                 0010 0000 0000 0000 0000 0000 0000 0010 0010
     sstatus 的 SPP 保存的是权限模式，应该与 mstatus 的 MPP 所对应
-    SPP 在 8 处，为 0，应该是 suer mode
+    SPP 在 8 处，为 0，应该是 user mode
 
