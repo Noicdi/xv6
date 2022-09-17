@@ -26,8 +26,7 @@ int fetchstr(uint64 addr, char *buf, int max) {
   return strlen(buf);
 }
 
-static uint64
-argraw(int n) {
+static uint64 argraw(int n) {
   struct proc *p = myproc();
   switch (n) {
     case 0:
@@ -157,7 +156,8 @@ void syscall(void) {
     // and store its return value in p->trapframe->a0
     p->trapframe->a0 = syscalls[num]();
     if ((1 << num) & p->trace_mask) {
-      printf("%d: syscall %s -> %d\n", p->pid, syscalls_name[num], p->trapframe->a0);
+      printf("%d: syscall %s -> %d\n",
+             p->pid, syscalls_name[num], p->trapframe->a0);
     }
   } else {
     printf("%d %s: unknown sys call %d\n",
