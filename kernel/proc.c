@@ -35,8 +35,9 @@ void proc_mapstacks(pagetable_t kpgtbl) {
 
   for (p = proc; p < &proc[NPROC]; p++) {
     char *pa = kalloc();
-    if (pa == 0)
+    if (pa == 0) {
       panic("kalloc");
+    }
     uint64 va = KSTACK((int)(p - proc));
     kvmmap(kpgtbl, va, (uint64)pa, PGSIZE, PTE_R | PTE_W);
   }
@@ -124,6 +125,15 @@ found:
     return 0;
   }
 
+#ifdef LAB_PGTBL
+  if ((p->usyscall = (struct usyscall *)kalloc()) == 0) {
+    freeproc(p);
+    release(&p->lock);
+    return 0;
+  }
+  p->usyscall->pid = p->pid;
+#endif
+
   // An empty user page table.
   p->pagetable = proc_pagetable(p);
   if (p->pagetable == 0) {
@@ -144,13 +154,20 @@ found:
 // free a proc structure and the data hanging from it,
 // including user pages.
 // p->lock must be held.
-static void
-freeproc(struct proc *p) {
-  if (p->trapframe)
+static void freeproc(struct proc *p) {
+  if (p->trapframe) {
     kfree((void *)p->trapframe);
+  }
   p->trapframe = 0;
-  if (p->pagetable)
+#ifdef LAB_PGTBL
+  if (p->usyscall) {
+    kfree((void *)p->usyscall);
+  }
+  p->usyscall = 0;
+#endif
+  if (p->pagetable) {
     proc_freepagetable(p->pagetable, p->sz);
+  }
   p->pagetable = 0;
   p->sz = 0;
   p->pid = 0;
@@ -165,14 +182,14 @@ freeproc(struct proc *p) {
 
 // Create a user page table for a given process, with no user memory,
 // but with trampoline and trapframe pages.
-pagetable_t
-proc_pagetable(struct proc *p) {
+pagetable_t proc_pagetable(struct proc *p) {
   pagetable_t pagetable;
 
   // An empty page table.
   pagetable = uvmcreate();
-  if (pagetable == 0)
+  if (pagetable == 0) {
     return 0;
+  }
 
   // map the trampoline code (for system call return)
   // at the highest user virtual address.
@@ -195,6 +212,15 @@ proc_pagetable(struct proc *p) {
     return 0;
   }
 
+#ifdef LAB_PGTBL
+  if (mappages(pagetable, USYSCALL, PGSIZE,
+               (uint64)(p->usyscall), PTE_R | PTE_U) // 忘记添加 PTE_U，导致实验停滞
+      < 0) {
+    uvmunmap(pagetable, USYSCALL, 1, 0);
+    uvmfree(pagetable, 0);
+  }
+#endif
+
   return pagetable;
 }
 
@@ -203,6 +229,7 @@ proc_pagetable(struct proc *p) {
 void proc_freepagetable(pagetable_t pagetable, uint64 sz) {
   uvmunmap(pagetable, TRAMPOLINE, 1, 0);
   uvmunmap(pagetable, TRAPFRAME, 1, 0);
+  uvmunmap(pagetable, USYSCALL, 1, 0);
   uvmfree(pagetable, sz);
 }
 

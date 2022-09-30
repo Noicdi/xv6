@@ -59,7 +59,7 @@
 
 // map kernel stacks beneath the trampoline,
 // each surrounded by invalid guard pages.
-#define KSTACK(p) (TRAMPOLINE - (p)*2*PGSIZE - 3*PGSIZE)
+#define KSTACK(p) (TRAMPOLINE - (p)*2 * PGSIZE - 3 * PGSIZE)
 
 // User memory layout.
 // Address zero first:
@@ -76,6 +76,6 @@
 #define USYSCALL (TRAPFRAME - PGSIZE)
 
 struct usyscall {
-  int pid;  // Process ID
+  int pid; // Process ID
 };
 #endif

@@ -311,7 +311,7 @@ typedef uint64 *pagetable_t; // 512 PTEs
 #define PGSIZE         4096 // bytes per page
 #define PGSHIFT        12   // bits of offset within a page
 
-#define PGROUNDUP(sz)  (((sz) + PGSIZE - 1) & ~(PGSIZE - 1))
+#define PGROUNDUP(sz)  (((sz) + PGSIZE - 1) & ~(PGSIZE - 1)) // 用以确保 sz 在页块的边界，是 4096B 的倍数
 #define PGROUNDDOWN(a) (((a)) & ~(PGSIZE - 1))
 
 // 页表项 PET 低 10bit 设置的标志位
