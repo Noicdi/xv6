@@ -690,5 +690,6 @@ int sysinfo(uint64 addr) {
 
   if (copyout(p->pagetable, addr, (char *)&info, sizeof(info)) < 0)
     return -1;
+
   return 0;
 }

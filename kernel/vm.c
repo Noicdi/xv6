@@ -452,3 +452,29 @@ void vmprint(pagetable_t pagetable) {
   printf("page table %p\n", pagetable);
   pteprint(pagetable, 1);
 }
+
+int pgaccess(pagetable_t pagetable, void *base, int len, void *mask) {
+  if (len > PGACCESS_MAXLEN) {
+    panic("pgaccess: len > PGACCESS_MAXLEN");
+  }
+
+  uint64 abits = 0;
+
+  for (int index = 0; index < len; index++) {
+    pte_t *pte = walk(pagetable, (uint64)base, 0);
+
+    if (pte == 0 || (*pte & PTE_V) == 0 || (*pte & PTE_U) == 0) {
+      return -1;
+    }
+    if (*pte & PTE_A) {
+      abits |= (1 << index);
+      *pte &= ~(PTE_A);
+    }
+
+    base += PGSIZE;
+  }
+
+  copyout(pagetable, (uint64)mask, (char *)&abits, sizeof(unsigned int));
+
+  return 0;
+}
