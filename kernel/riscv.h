@@ -344,6 +344,5 @@ typedef uint64 *pagetable_t; // 512 PTEs
 // the maximum address is 2^38 - 1 = 0x3fffffffff
 #define MAXVA (1L << (9 + 9 + 9 + 12 - 1))
 
-#ifdef LAB_PGTBL
+// Pgtbl Lab -> pgaccess()
 #define PGACCESS_MAXLEN 32
-#endif
