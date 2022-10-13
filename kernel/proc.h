@@ -50,7 +50,7 @@ struct trapframe {
   /*  40 */ uint64 ra;            // return address
   /*  48 */ uint64 sp;            // stack pointer
   /*  56 */ uint64 gp;            // global pointer
-  /*  64 */ uint64 tp;            // thread pointer
+  /*  64 */ uint64 tp;            // thread pointer, 确定当前程序运行在哪个核上
   /*  72 */ uint64 t0;            // temporary
   /*  80 */ uint64 t1;            // temporary
   /*  88 */ uint64 t2;            // temporary
@@ -58,12 +58,12 @@ struct trapframe {
   /* 104 */ uint64 s1;            // saved register
   /* 112 */ uint64 a0;            // function argument / return value
   /* 120 */ uint64 a1;            // function argument / return value
-  /* 128 */ uint64 a2;            // function
-  /* 136 */ uint64 a3;            // function
-  /* 144 */ uint64 a4;            // function
-  /* 152 */ uint64 a5;            // function
-  /* 160 */ uint64 a6;            // function
-  /* 168 */ uint64 a7;            // function
+  /* 128 */ uint64 a2;            // function argument
+  /* 136 */ uint64 a3;            // function argument
+  /* 144 */ uint64 a4;            // function argument
+  /* 152 */ uint64 a5;            // function argument
+  /* 160 */ uint64 a6;            // function argument
+  /* 168 */ uint64 a7;            // function argument
   /* 176 */ uint64 s2;            // saved register
   /* 184 */ uint64 s3;            // saved register
   /* 192 */ uint64 s4;            // saved register

@@ -9,6 +9,9 @@
         # kernel.ld causes this code to start at
         # a page boundary.
         #
+        # 发生 trap 时需要通过此汇编代码保存和恢复用户态的寄存器
+        # uservec 用于保存
+        # userret 用于恢复
 
 #include "riscv.h"
 #include "memlayout.h"
@@ -33,6 +36,7 @@ uservec:
         # each process has a separate p->trapframe memory area,
         # but it's mapped to the same virtual address
         # (TRAPFRAME) in every process's user page table.
+        # 保存虚拟地址中 TRAPFRAME 帧到 a0 中
         li a0, TRAPFRAME
 
         # save the user registers in TRAPFRAME
@@ -45,6 +49,9 @@ uservec:
         sd t2, 88(a0)
         sd s0, 96(a0)
         sd s1, 104(a0)
+        # 偏移量从 104 跳到 120
+        # 跳过了保存 a0
+        # 在下文中保存
         sd a1, 120(a0)
         sd a2, 128(a0)
         sd a3, 136(a0)
@@ -72,6 +79,7 @@ uservec:
         sd t0, 112(a0)
 
         # initialize kernel stack pointer, from p->trapframe->kernel_sp
+        # proc.h:46
         ld sp, 8(a0)
 
         # make tp hold the current hartid, from p->trapframe->kernel_hartid
@@ -89,6 +97,7 @@ uservec:
         sfence.vma zero, zero
 
         # install the kernel page table.
+        # 读取 kernel_pagetable 到 satp 中
         csrw satp, t1
 
         # flush now-stale user entries from the TLB.
