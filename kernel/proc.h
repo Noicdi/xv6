@@ -121,4 +121,9 @@ struct proc {
   char name[16];              // Process name (debugging)
 
   int trace_mask; // trace mask
+
+  int sigticks; // sigalarm() and sigreturn()
+  int sigcount;
+  uint64 sighandler;
+  struct trapframe *sigframe;
 };

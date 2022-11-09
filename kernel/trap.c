@@ -79,8 +79,24 @@ void usertrap(void) {
     exit(-1);
 
   // give up the CPU if this is a timer interrupt.
-  if (which_dev == 2)
+  if (which_dev == 2) {
+    // p->sigticks != 0 -> sigalarm() 被设置
+    // p->sigframe == 0 -> handler() 未被调用
+    if (p->sigticks != 0) {
+      p->sigcount++;
+      if (p->sigcount == p->sigticks) {
+        p->sigcount = 0;
+        if (p->sigframe == 0) {
+          if ((p->sigframe = (struct trapframe *)kalloc()) != 0) {
+            memmove(p->sigframe, p->trapframe, PGSIZE);
+            p->trapframe->epc = p->sighandler;
+          }
+        }
+      }
+    }
+
     yield();
+  }
 
   usertrapret();
 }

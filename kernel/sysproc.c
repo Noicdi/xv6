@@ -116,3 +116,29 @@ uint64 sys_sysinfo(void) {
 
   return sysinfo(addr);
 }
+
+uint64 sys_sigalarm() {
+  struct proc *p = myproc();
+  if (p == 0) {
+    return -1;
+  }
+
+  argint(0, &p->sigticks);
+  argaddr(1, &p->sighandler);
+  p->sigcount = 0;
+
+  return 0;
+}
+
+uint64 sys_sigreturn() {
+  struct proc *p = myproc();
+  if (p == 0 || p->sigframe == 0) {
+    return -1;
+  }
+
+  memmove(p->trapframe, p->sigframe, PGSIZE);
+  kfree(p->sigframe);
+  p->sigframe = 0;
+
+  return p->trapframe->a0;
+}
