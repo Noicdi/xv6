@@ -25,4 +25,5 @@ barrier
 /lab-*.json
 .DS_Store
 .cache/
+.clangd/
 time.txt

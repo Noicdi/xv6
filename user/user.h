@@ -25,6 +25,8 @@ int             sleep(int);
 int             uptime(void);
 int             trace(int);
 int             sysinfo(struct sysinfo*);
+void            sigalarm(int ticks, void (*handler)());
+void            sigreturn(void);
 #ifdef LAB_PGTBL
 int             ugetpid(void);
 int             pgaccess(void* base, int len, void* mask);

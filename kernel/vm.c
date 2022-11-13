@@ -468,7 +468,7 @@ int pgaccess(pagetable_t pagetable, void *base, int len, void *mask) {
     }
     if (*pte & PTE_A) {
       abits |= (1 << index);
-      *pte &= ~(PTE_A);
+      *pte &= ~PTE_A;
     }
 
     base += PGSIZE;

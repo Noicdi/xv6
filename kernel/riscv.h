@@ -1,5 +1,13 @@
 #ifndef __ASSEMBLER__
 
+// get value of current frame pointer
+static inline uint64 r_fp() {
+  uint64 x;
+  asm volatile("mv %0, s0"
+               : "=r"(x));
+  return x;
+}
+
 // which hart (core) is this?
 static inline uint64 r_mhartid() {
   uint64 x;
@@ -323,11 +331,9 @@ typedef uint64 *pagetable_t; // 512 PTEs
 #define PTE_A (1L << 6) // 此位上次被清除后，该页面是否被访问过
 
 // shift a physical address to the right place for a PTE.
-#define PA2PTE(pa)     ((((uint64)pa) >> 12) << 10)
-
-#define PTE2PA(pte)    (((pte) >> 10) << 12)
-
-#define PTE_FLAGS(pte) ((pte)&0x3FF)
+#define PA2PTE(pa)     ((((uint64)pa) >> 12) << 10) // 放弃低 12 bit 偏移量，填充 10 bit 0 用于标志位
+#define PTE2PA(pte)    (((pte) >> 10) << 12)        // 放弃低 10 bit 标志位，填充 12 bit 0 用于偏移量
+#define PTE_FLAGS(pte) ((pte)&0x3FF)                // 获取低 10 bit 标志位
 
 // extract the three 9-bit page table indices from a virtual address.
 #define PXMASK         0x1FF // 9 bits
