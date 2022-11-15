@@ -8,6 +8,7 @@ struct spinlock;
 struct sleeplock;
 struct stat;
 struct superblock;
+struct sysinfo;
 
 // bio.c
 void            binit(void);
@@ -63,6 +64,7 @@ void            ramdiskrw(struct buf*);
 void*           kalloc(void);
 void            kfree(void *);
 void            kinit(void);
+uint64          collfree();
 
 // log.c
 void            initlog(int, struct superblock*);
@@ -80,6 +82,7 @@ int             pipewrite(struct pipe*, uint64, int);
 void            printf(char*, ...);
 void            panic(char*) __attribute__((noreturn));
 void            printfinit(void);
+void            backtrace(void);
 
 // proc.c
 int             cpuid(void);
@@ -106,6 +109,9 @@ void            yield(void);
 int             either_copyout(int user_dst, uint64 dst, void *src, uint64 len);
 int             either_copyin(void *dst, int user_src, uint64 src, uint64 len);
 void            procdump(void);
+void            trace(int);
+uint64          collproc(void);
+int             sysinfo(uint64);
 
 // swtch.S
 void            swtch(struct context*, struct context*);
@@ -143,9 +149,9 @@ void            syscall();
 
 // trap.c
 extern uint     ticks;
+extern struct spinlock tickslock;
 void            trapinit(void);
 void            trapinithart(void);
-extern struct spinlock tickslock;
 void            usertrapret(void);
 
 // uart.c
@@ -173,6 +179,8 @@ uint64          walkaddr(pagetable_t, uint64);
 int             copyout(pagetable_t, uint64, char *, uint64);
 int             copyin(pagetable_t, char *, uint64, uint64);
 int             copyinstr(pagetable_t, char *, uint64, uint64);
+void            vmprint(pagetable_t);
+int             pgaccess(pagetable_t, void*, int, void*);
 
 // plic.c
 void            plicinit(void);
