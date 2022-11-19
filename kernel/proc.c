@@ -119,8 +119,8 @@ found:
   p->trace_mask = 0;
   p->sigticks = 0;
   p->sigcount = 0;
-  p->sighandler = 0;
   p->sigframe = 0;
+  p->sighandler = 0;
 
   // Allocate a trapframe page.
   if ((p->trapframe = (struct trapframe *)kalloc()) == 0) {
@@ -184,8 +184,8 @@ static void freeproc(struct proc *p) {
   p->trace_mask = 0;
   p->sigticks = 0;
   p->sigcount = 0;
-  p->sighandler = 0;
   p->sigframe = 0;
+  p->sighandler = 0;
 }
 
 // Create a user page table for a given process, with no user memory,
@@ -324,6 +324,11 @@ int fork(void) {
   np->trapframe->a0 = 0;
 
   np->trace_mask = p->trace_mask;
+
+  np->sigticks = p->sigticks;
+  np->sigcount = p->sigcount;
+  np->sigframe = p->sigframe;
+  np->sighandler = p->sighandler;
 
   // increment reference counts on open file descriptors.
   for (i = 0; i < NOFILE; i++)
