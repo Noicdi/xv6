@@ -464,6 +464,7 @@ int wait(uint64 addr) {
 //    via swtch back to the scheduler.
 void scheduler(void) {
   struct proc *p;
+  // each CPU calls scheduler() to run the process
   struct cpu *c = mycpu();
 
   c->proc = 0;

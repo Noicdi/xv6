@@ -56,7 +56,7 @@ uint64 sys_sleep(void) {
   }
   release(&tickslock);
 
-  backtrace();
+  //backtrace();
 
   return 0;
 }

@@ -8,6 +8,7 @@ volatile static int started = 0;
 
 // start() jumps here in supervisor mode on all CPUs.
 void main() {
+  // designate thread 0  to initialization kernel
   if (cpuid() == 0) {
     consoleinit(); // init console
     printfinit();
@@ -30,6 +31,7 @@ void main() {
     __sync_synchronize();
     started = 1;
   } else {
+    // others thread wait for initialization finished of kernel
     while (started == 0)
       ;
     __sync_synchronize();
