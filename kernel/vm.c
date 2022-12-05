@@ -300,9 +300,12 @@ int uvmcopy(pagetable_t old, pagetable_t new, uint64 sz) {
   pte_t *pte;
   uint64 pa, i;
   uint flags;
-  char *mem;
+  // char *mem;
 
+  // 这个循环的本意是将父进程的内存完整拷贝给子进程
+  // i 是虚拟地址，因为需要完整拷贝，所以虚拟地址从 0 开始
   for (i = 0; i < sz; i += PGSIZE) {
+    // walk() 从页表中找到虚拟地址对应的物理块的 PTE
     if ((pte = walk(old, i, 0)) == 0) {
       panic("uvmcopy: pte should exist");
     }
@@ -310,15 +313,31 @@ int uvmcopy(pagetable_t old, pagetable_t new, uint64 sz) {
       panic("uvmcopy: page not present");
     }
     pa = PTE2PA(*pte);
+    // flags = PTE_FLAGS(*pte);
+    // if ((mem = kalloc()) == 0) {
+    //   goto err;
+    // }
+    // memmove(mem, (char *)pa, PGSIZE);
+    // if (mappages(new, i, PGSIZE, (uint64)mem, flags) != 0) {
+    //   kfree(mem);
+    //   goto err;
+    // }
+
+    // cow
+    // text 不可写，不应该设置为 PTE_COW
+    // 否则单元测试时 textwrite 无法通过
+    if (*pte & PTE_W) {
+      *pte &= ~PTE_W;
+      *pte |= PTE_COW;
+    }
+    cowcount(pa, 1);
     flags = PTE_FLAGS(*pte);
-    if ((mem = kalloc()) == 0) {
+    if (mappages(new, i, PGSIZE, (uint64)pa, flags) != 0) {
+      // 由于之前增加过计数器，映射失败需要释放一个计数器
+      kfree((void *)pa);
       goto err;
     }
-    memmove(mem, (char *)pa, PGSIZE);
-    if (mappages(new, i, PGSIZE, (uint64)mem, flags) != 0) {
-      kfree(mem);
-      goto err;
-    }
+    // cow
   }
   return 0;
 
@@ -351,6 +370,12 @@ int copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len) {
     if (pa0 == 0) {
       return -1;
     }
+
+    if (cowcount(pa0, 0) > 1) {
+      writecowpage(pagetable, va0);
+      pa0 = walkaddr(pagetable, va0);
+    }
+
     n = PGSIZE - (dstva - va0);
     if (n > len) {
       n = len;

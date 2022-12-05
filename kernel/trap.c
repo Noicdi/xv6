@@ -25,6 +25,52 @@ void trapinithart(void) {
   w_stvec((uint64)kernelvec);
 }
 
+// write a cow page
+// return -1 if
+// 1. page address form va is not cow page
+// 2. xv6 not have enough pages
+// 3. fail to mappages
+int writecowpage(pagetable_t pagetable, uint64 va) {
+  va = PGROUNDDOWN(va);
+  pte_t *pte = walk(pagetable, va, 0);
+  if (pte == 0) {
+    panic("COW: fail to get pte");
+  }
+
+  uint flags = PTE_FLAGS(*pte);
+  if (!(flags & PTE_COW)) {
+    // this page is not a cow page
+    printf("COW: This page from %p is not a cow page\n", va);
+    return -1;
+  }
+
+  uint64 pa = PTE2PA(*pte);
+  if (cowcount(pa, 0) > 1) {
+    char *mem = 0;
+    flags |= PTE_W;
+    flags &= ~PTE_COW;
+
+    if ((mem = kalloc()) == 0) {
+      printf("COW: fail to kalloc, kill current process\n");
+      // 如果没有足够的页面则杀死进程
+      return -1;
+    }
+
+    memmove(mem, (char *)pa, PGSIZE);
+    uvmunmap(pagetable, va, 1, 1);
+    if (mappages(pagetable, va, PGSIZE, (uint64)mem, flags) != 0) {
+      printf("COW: fail to mappages\n");
+      kfree(mem);
+      return -1;
+    }
+  } else {
+    *pte |= PTE_W;
+    *pte &= ~PTE_COW;
+  }
+
+  return 0;
+}
+
 //
 // handle an interrupt, exception, or system call from user space.
 // called from trampoline.S
@@ -48,6 +94,8 @@ void usertrap(void) {
   // 需要保存当前进程的 user pc
   p->trapframe->epc = r_sepc();
 
+  // RISC-V manual Chinese P100 图10.3
+  // 关于异常和中断的原因
   if (r_scause() == 8) {
     // system call
 
@@ -67,6 +115,17 @@ void usertrap(void) {
     intr_on();
 
     syscall();
+  } else if (r_scause() == 15) {
+    // Store page fault
+    uint64 va = r_stval();
+
+    if (va > p->sz) {
+      printf("Error: The virtual address greater then this process's size\n");
+      p->killed = 1;
+    } else if (writecowpage(p->pagetable, va) != 0) {
+      printf("Error: This page is not a cow-page or xv6 don't have enouth page, so not allow to write\n");
+      p->killed = 1;
+    }
   } else if ((which_dev = devintr()) != 0) {
     // ok
   } else {

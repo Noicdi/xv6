@@ -65,6 +65,7 @@ void*           kalloc(void);
 void            kfree(void *);
 void            kinit(void);
 uint64          collfree();
+char            cowcount(uint64, int);
 
 // log.c
 void            initlog(int, struct superblock*);
@@ -153,6 +154,7 @@ extern struct spinlock tickslock;
 void            trapinit(void);
 void            trapinithart(void);
 void            usertrapret(void);
+int             writecowpage(pagetable_t, uint64);
 
 // uart.c
 void            uartinit(void);

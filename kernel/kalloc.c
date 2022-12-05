@@ -23,8 +23,31 @@ struct {
   struct run *freelist; // the listchain of free memory
 } kmem;
 
+struct {
+  struct spinlock lock;
+  char count[COWCOUNTSZ];
+} cowcounts;
+
+char cowcount(uint64 pa, int flag) {
+  char count = 0;
+
+  acquire(&cowcounts.lock);
+  if (flag > 0) {
+    cowcounts.count[COWCOUNT(pa)]++;
+  } else if (flag < 0) {
+    cowcounts.count[COWCOUNT(pa)]--;
+  }
+  count = cowcounts.count[COWCOUNT(pa)];
+  release(&cowcounts.lock);
+
+  return count;
+}
+
 void kinit() {
   initlock(&kmem.lock, "kmem");
+  initlock(&cowcounts.lock, "cowcount");
+  // 这里初始化为 1 是为了 freerange() 是可以 kfree 每个页面
+  memset(&cowcounts.count, 1, COWCOUNTSZ);
   freerange(end, (void *)PHYSTOP);
 }
 
@@ -49,6 +72,12 @@ void kfree(void *pa) {
 
   if (((uint64)pa % PGSIZE) != 0 || (char *)pa < end || (uint64)pa >= PHYSTOP) {
     panic("kfree");
+  }
+
+  // 首先减少引用计数
+  // 引用计数为 0 则表示最后一个进程释放了这个 page
+  if (cowcount((uint64)pa, -1) != 0) {
+    return;
   }
 
   // Fill with junk to catch dangling refs.
@@ -80,6 +109,7 @@ void *kalloc(void) {
 
   if (r) {
     memset((char *)r, 5, PGSIZE); // fill with junk
+    cowcount((uint64)r, 1);
   }
 
   return (void *)r;
@@ -95,5 +125,5 @@ uint64 collfree() {
     freelist = freelist->next;
   }
 
-  return count * 4096;
+  return count * PGSIZE;
 }

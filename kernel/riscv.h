@@ -323,12 +323,13 @@ typedef uint64 *pagetable_t; // 512 PTEs
 #define PGROUNDDOWN(a) (((a)) & ~(PGSIZE - 1))
 
 // 页表项 PET 低 10bit 设置的标志位
-#define PTE_V (1L << 0) // 当前 PTE 是否存在，未设置则引发异常
-#define PTE_R (1L << 1) // 可读
-#define PTE_W (1L << 2) // 可写
-#define PTE_X (1L << 3) // 此 PTE 指向的页块是可执行的指令
-#define PTE_U (1L << 4) // 用户态可读取，未设置则只能监管态读取
-#define PTE_A (1L << 6) // 此位上次被清除后，该页面是否被访问过
+#define PTE_V   (1L << 0) // 当前 PTE 是否存在，未设置则引发异常
+#define PTE_R   (1L << 1) // 可读
+#define PTE_W   (1L << 2) // 可写
+#define PTE_X   (1L << 3) // 此 PTE 指向的页块是可执行的指令
+#define PTE_U   (1L << 4) // 用户态可读取，未设置则只能监管态读取
+#define PTE_A   (1L << 6) // 此位上次被清除后，该页面是否被访问过
+#define PTE_COW (1L << 8) // COW page
 
 // shift a physical address to the right place for a PTE.
 #define PA2PTE(pa)     ((((uint64)pa) >> 12) << 10) // 放弃低 12 bit 偏移量，填充 10 bit 0 用于标志位
