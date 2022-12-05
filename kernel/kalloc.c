@@ -74,6 +74,8 @@ void kfree(void *pa) {
     panic("kfree");
   }
 
+  // 首先减少引用计数
+  // 引用计数为 0 则表示最后一个进程释放了这个 page
   if (cowcount((uint64)pa, -1) != 0) {
     return;
   }
