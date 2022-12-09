@@ -154,6 +154,7 @@ void usertrap(void) {
       }
     }
 
+    // 定时器中断，线程调度
     yield();
   }
 

@@ -30,6 +30,8 @@ struct spinlock wait_lock;
 // Allocate a page for each process's kernel stack.
 // Map it high in memory, followed by an invalid
 // guard page.
+// Figure 3.3
+// Kstack 0 | Kstack 1 | ...
 void proc_mapstacks(pagetable_t kpgtbl) {
   struct proc *p;
 
@@ -53,7 +55,7 @@ void procinit(void) {
     initlock(&p->lock, "proc");
     p->state = UNUSED;
     p->trace_mask = 0;
-    p->kstack = KSTACK((int)(p - proc));
+    p->kstack = KSTACK((int)(p - proc)); // get detail from proc.h
   }
 }
 
@@ -504,11 +506,11 @@ void sched(void) {
 
   if (!holding(&p->lock))
     panic("sched p->lock");
-  if (mycpu()->noff != 1)
+  if (mycpu()->noff != 1) // 关中断的深度
     panic("sched locks");
   if (p->state == RUNNING)
     panic("sched running");
-  if (intr_get())
+  if (intr_get()) // 中断是否关闭
     panic("sched interruptible");
 
   intena = mycpu()->intena;
