@@ -482,6 +482,12 @@ void scheduler(void) {
         // before jumping back to us.
         p->state = RUNNING;
         c->proc = p;
+
+        // **notice**
+        // swtch() will store c->context->ra(return address),
+        // and the next time, the thread will return here by ra.
+        // But swtch() does not need to store pc,
+        // because pc will point here after swtch() is done.
         swtch(&c->context, &p->context);
 
         // Process is done running for now.
@@ -504,13 +510,19 @@ void sched(void) {
   int intena;
   struct proc *p = myproc();
 
+  // 1. acquire p->lock
   if (!holding(&p->lock))
     panic("sched p->lock");
-  if (mycpu()->noff != 1) // 关中断的深度
+  // 2. release any other locks it is holding
+  // cpu->noff mean the depth of push_off() nesting
+  // cpu->noff != 1 mean it holding other locks
+  if (mycpu()->noff != 1)
     panic("sched locks");
+  // 3. update p->state
   if (p->state == RUNNING)
     panic("sched running");
-  if (intr_get()) // 中断是否关闭
+  // get status of interrupt
+  if (intr_get())
     panic("sched interruptible");
 
   intena = mycpu()->intena;
@@ -519,6 +531,10 @@ void sched(void) {
 }
 
 // Give up the CPU for one scheduling round.
+// 1. acquire p->lock
+// 2. release any other locks it is holding
+// 3. update p->state
+// 4. sched()
 void yield(void) {
   struct proc *p = myproc();
   acquire(&p->lock);
