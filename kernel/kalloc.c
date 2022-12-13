@@ -25,7 +25,7 @@ struct {
 
 struct {
   struct spinlock lock;
-  char count[COWCOUNTSZ];
+  unsigned char count[COWCOUNTSZ];
 } cowcounts;
 
 char cowcount(uint64 pa, int flag) {
