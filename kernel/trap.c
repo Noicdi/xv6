@@ -121,6 +121,7 @@ void usertrap(void) {
 
     if (va > p->sz) {
       printf("Error: The virtual address greater then this process's size\n");
+      printf("       stval=%p\n", va);
       p->killed = 1;
     } else if (writecowpage(p->pagetable, va) != 0) {
       printf("Error: This page is not a cow-page or xv6 don't have enouth page, so not allow to write\n");
