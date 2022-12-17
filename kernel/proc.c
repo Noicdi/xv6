@@ -494,6 +494,9 @@ void scheduler(void) {
         // It should have changed its p->state before coming back.
         c->proc = 0;
       }
+      // When switching back to scheduler,
+      // the CPU loads context of scheduler thread.
+      // p is store in the context, so the lock of process can be release here.
       release(&p->lock);
     }
   }
@@ -581,6 +584,10 @@ void sleep(void *chan, struct spinlock *lk) {
   p->chan = chan;
   p->state = SLEEPING;
 
+  // Btore current context and switch to other threads.
+  // p->state = SLEEPING, so this thread will not be switched.
+  // However, when another threades calls wakeup(),
+  // but p->state will be changed to RUNNABLE.
   sched();
 
   // Tidy up.
