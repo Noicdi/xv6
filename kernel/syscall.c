@@ -94,6 +94,12 @@ extern uint64 sys_sysinfo(void);
 extern uint64 sys_pgaccess(void);
 extern uint64 sys_sigalarm(void);
 extern uint64 sys_sigreturn(void);
+#ifdef LAB_NET
+extern uint64 sys_connect(void);
+#endif
+#ifdef LAB_PGTBL
+extern uint64 sys_pgaccess(void);
+#endif
 
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
