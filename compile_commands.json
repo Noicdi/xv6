@@ -1,7 +1,7 @@
 [
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-c",
       "-o",
       "kernel/entry.o",
@@ -13,7 +13,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -41,7 +41,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -69,7 +69,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -97,7 +97,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -125,7 +125,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -153,7 +153,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-c",
       "-o",
       "kernel/swtch.o",
@@ -165,7 +165,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-c",
       "-o",
       "kernel/trampoline.o",
@@ -177,7 +177,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -205,7 +205,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -233,7 +233,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -261,7 +261,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -289,7 +289,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -317,7 +317,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -345,7 +345,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -373,7 +373,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -401,7 +401,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -429,7 +429,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -457,7 +457,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -485,7 +485,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-c",
       "-o",
       "kernel/kernelvec.o",
@@ -497,7 +497,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -525,7 +525,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -553,7 +553,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -581,7 +581,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -609,7 +609,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -637,7 +637,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -665,7 +665,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -693,7 +693,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -721,7 +721,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -749,7 +749,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -777,7 +777,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -805,7 +805,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -854,7 +854,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -882,7 +882,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -910,7 +910,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -938,7 +938,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -966,7 +966,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -994,7 +994,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -1022,7 +1022,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -1050,7 +1050,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -1078,7 +1078,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -1106,7 +1106,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -1134,7 +1134,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -1162,7 +1162,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -1190,7 +1190,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -1218,7 +1218,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -1246,7 +1246,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -1274,7 +1274,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -1302,7 +1302,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -1330,7 +1330,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -1358,7 +1358,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -1386,7 +1386,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -1414,7 +1414,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -1442,7 +1442,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -1470,7 +1470,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -1498,7 +1498,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -1526,7 +1526,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -1554,7 +1554,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -1582,7 +1582,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -1610,7 +1610,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
@@ -1638,7 +1638,7 @@
   },
   {
     "arguments": [
-      "/usr/bin/riscv64-linux-gnu-gcc",
+      "/usr/sbin/riscv64-linux-gnu-gcc",
       "-Wall",
       "-Werror",
       "-O",
