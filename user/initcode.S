@@ -4,6 +4,7 @@
 #include "syscall.h"
 
 # exec(init, argv)
+# exec(init, 0)
 .globl start
 start:
         la a0, init
@@ -11,7 +12,7 @@ start:
         li a7, SYS_exec
         ecall
 
-# for(;;) exit();
+# for(;;) { exit(); }
 exit:
         li a7, SYS_exit
         ecall
