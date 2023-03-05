@@ -18,10 +18,12 @@ struct run {
   struct run *next;
 };
 
-struct {
+struct kmem {
   struct spinlock lock;
   struct run *freelist; // the listchain of free memory
-} kmem;
+};
+
+struct kmem kmem[NCPU];
 
 struct {
   struct spinlock lock;
@@ -44,7 +46,12 @@ char cowcount(uint64 pa, int flag) {
 }
 
 void kinit() {
-  initlock(&kmem.lock, "kmem");
+  char lockbuf[8];
+  for (int i = 0; i < NCPU; i++) {
+    memset(lockbuf, 0, 8);
+    snprintf(lockbuf, 8, "kmem%d", i);
+    initlock(&kmem[i].lock, lockbuf);
+  }
   initlock(&cowcounts.lock, "cowcount");
   // 这里初始化为 1 是为了 freerange() 是可以 kfree 每个页面
   memset(&cowcounts.count, 1, COWCOUNTSZ);
@@ -85,10 +92,14 @@ void kfree(void *pa) {
 
   r = (struct run *)pa;
 
-  acquire(&kmem.lock);
-  r->next = kmem.freelist;
-  kmem.freelist = r;
-  release(&kmem.lock);
+  push_off();
+  int i = cpuid();
+  pop_off();
+
+  acquire(&kmem[i].lock);
+  r->next = kmem[i].freelist;
+  kmem[i].freelist = r;
+  release(&kmem[i].lock);
 }
 
 // Allocate one 4096-byte page of physical memory.
@@ -100,12 +111,23 @@ void kfree(void *pa) {
 void *kalloc(void) {
   struct run *r;
 
-  acquire(&kmem.lock);
-  r = kmem.freelist;
-  if (r) {
-    kmem.freelist = r->next;
+  push_off();
+  int i = cpuid();
+  pop_off();
+
+  for (int c = 0; c < NCPU; c++) {
+    acquire(&kmem[i].lock);
+    r = kmem[i].freelist;
+    if (r) {
+      kmem[i].freelist = r->next;
+      release(&kmem[i].lock);
+      break;
+    }
+    release(&kmem[i].lock);
+    if (++i == NCPU) {
+      i = 0;
+    }
   }
-  release(&kmem.lock);
 
   if (r) {
     memset((char *)r, 5, PGSIZE); // fill with junk
@@ -118,11 +140,14 @@ void *kalloc(void) {
 // collect the amount of free memory
 uint64 collfree() {
   uint64 count = 0;
-  struct run *freelist = kmem.freelist;
+  struct run *freelist = 0;
 
-  while (freelist != 0) {
-    count++;
-    freelist = freelist->next;
+  for (int i = 0; i < NCPU; i++) {
+    freelist = kmem[i].freelist;
+    while (freelist != 0) {
+      count++;
+      freelist = freelist->next;
+    }
   }
 
   return count * PGSIZE;
